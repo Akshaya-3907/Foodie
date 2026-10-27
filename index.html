@@ -1,0 +1,1562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Foodie - Food Delivery</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --orange: #ff6b35;
+    --dark: #242424;
+    --muted: #737373;
+    --border: #eeeeee;
+    --light: #fff6f0;
+    --green: #198754;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    color: var(--dark);
+    background: #ffffff;
+}
+
+button, input, textarea, select {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.container {
+    max-width: 1180px;
+    margin: auto;
+    padding: 0 22px;
+}
+
+/* NAVIGATION */
+
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: white;
+    border-bottom: 1px solid var(--border);
+}
+
+.nav-inner {
+    max-width: 1180px;
+    margin: auto;
+    padding: 15px 22px;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo {
+    font-size: 28px;
+    font-weight: 900;
+    color: var(--orange);
+}
+
+.logo span {
+    color: var(--dark);
+}
+
+.search {
+    flex: 1;
+    max-width: 470px;
+    background: #f5f5f5;
+    border-radius: 12px;
+    padding: 12px 15px;
+    display: flex;
+    gap: 10px;
+}
+
+.search input {
+    width: 100%;
+    min-width: 0;
+    background: transparent;
+    border: none;
+    outline: none;
+}
+
+.cart-btn {
+    background: var(--dark);
+    color: white;
+    border: none;
+    border-radius: 9px;
+    padding: 12px 16px;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.cart-count {
+    background: var(--orange);
+    border-radius: 20px;
+    padding: 3px 7px;
+    margin-left: 5px;
+}
+
+/* HERO */
+
+.hero {
+    margin-top: 28px;
+    padding: 38px;
+    border-radius: 22px;
+    background: linear-gradient(110deg, #fff0e6, #ffe0cf);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 25px;
+}
+
+.hero-copy {
+    max-width: 580px;
+}
+
+.eyebrow {
+    font-size: 12px;
+    color: var(--orange);
+    font-weight: bold;
+    letter-spacing: 1.5px;
+    margin-bottom: 13px;
+    text-transform: uppercase;
+}
+
+.hero h1 {
+    font-size: clamp(32px, 5vw, 50px);
+    line-height: 1.12;
+    margin-bottom: 15px;
+}
+
+.hero h1 span {
+    color: var(--orange);
+}
+
+.hero p {
+    color: #666;
+    line-height: 1.7;
+    margin-bottom: 22px;
+}
+
+.hero-photo {
+    width: 220px;
+    height: 190px;
+    flex-shrink: 0;
+    border-radius: 18px;
+    object-fit: cover;
+}
+
+.primary {
+    background: var(--orange);
+    color: white;
+    border: none;
+    border-radius: 9px;
+    padding: 12px 18px;
+    font-weight: bold;
+}
+
+.primary:hover {
+    background: #e95724;
+}
+
+/* CATEGORIES */
+
+.section {
+    margin-top: 38px;
+}
+
+.section-heading {
+    margin-bottom: 20px;
+}
+
+.section-heading h2 {
+    font-size: 25px;
+}
+
+.section-heading p {
+    color: var(--muted);
+    font-size: 13px;
+    margin-top: 6px;
+}
+
+.categories {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.category {
+    padding: 10px 16px;
+    border: 1px solid var(--border);
+    background: white;
+    border-radius: 25px;
+    font-size: 13px;
+}
+
+.category.active,
+.category:hover {
+    color: white;
+    background: var(--orange);
+    border-color: var(--orange);
+}
+
+/* RESTAURANTS */
+
+.restaurant-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+}
+
+.restaurant-card {
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-radius: 15px;
+    background: white;
+    transition: .2s;
+}
+
+.restaurant-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px #0000000d;
+}
+
+.restaurant-photo {
+    height: 175px;
+    width: 100%;
+    object-fit: cover;
+    display: block;
+    background: var(--light);
+}
+
+.restaurant-info {
+    padding: 16px;
+}
+
+.restaurant-info h3 {
+    font-size: 17px;
+    margin-bottom: 8px;
+}
+
+.restaurant-info p {
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.meta {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    font-size: 12px;
+    margin-top: 12px;
+}
+
+.rating {
+    color: var(--green);
+    font-weight: bold;
+}
+
+.open-menu {
+    width: 100%;
+    margin-top: 15px;
+    background: #fff0e8;
+    color: #c64b20;
+    border: none;
+    border-radius: 7px;
+    padding: 10px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+/* FOOD MENU */
+
+.menu-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin: 35px 0 20px;
+}
+
+.menu-head h2 {
+    font-size: 24px;
+    margin-bottom: 7px;
+}
+
+.menu-head p {
+    font-size: 13px;
+    color: var(--muted);
+}
+
+.secondary {
+    border: 1px solid var(--border);
+    background: white;
+    border-radius: 8px;
+    padding: 10px 13px;
+}
+
+.menu-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.food-card {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    border: 1px solid var(--border);
+    border-radius: 13px;
+    padding: 12px;
+    min-width: 0;
+}
+
+.food-photo {
+    height: 105px;
+    width: 105px;
+    flex-shrink: 0;
+    object-fit: cover;
+    border-radius: 10px;
+    background: var(--light);
+}
+
+.food-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.food-info h3 {
+    font-size: 15px;
+    margin-bottom: 7px;
+}
+
+.food-info p {
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.5;
+    margin-bottom: 10px;
+}
+
+.food-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+}
+
+.price {
+    font-weight: bold;
+}
+
+.add {
+    background: white;
+    color: var(--green);
+    border: 1px solid #b7e1ca;
+    border-radius: 7px;
+    padding: 7px 12px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.add:hover {
+    background: #eaf8ef;
+}
+
+/* CART */
+
+.cart-layout {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 22px;
+    align-items: start;
+    margin-top: 25px;
+}
+
+.panel {
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 22px;
+    min-width: 0;
+}
+
+.panel h2 {
+    font-size: 20px;
+    margin-bottom: 18px;
+}
+
+.cart-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 13px 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.cart-item:last-child {
+    border-bottom: none;
+}
+
+.cart-thumb {
+    width: 65px;
+    height: 65px;
+    object-fit: cover;
+    border-radius: 9px;
+    background: var(--light);
+}
+
+.cart-item-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.cart-item-info h4 {
+    font-size: 13px;
+    margin-bottom: 6px;
+}
+
+.cart-item-info p {
+    font-size: 12px;
+    color: var(--muted);
+}
+
+.quantity {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.quantity button {
+    width: 27px;
+    height: 27px;
+    border: none;
+    border-radius: 6px;
+    background: #fff0e8;
+    color: var(--orange);
+    font-weight: bold;
+}
+
+.bill-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin: 14px 0;
+    font-size: 14px;
+    color: #555;
+}
+
+.bill-total {
+    border-top: 1px dashed #ddd;
+    padding-top: 15px;
+    font-size: 18px;
+    font-weight: bold;
+    color: var(--dark);
+}
+
+.note {
+    font-size: 12px;
+    color: var(--green);
+    line-height: 1.6;
+    margin-top: 10px;
+}
+
+.empty {
+    color: var(--muted);
+    text-align: center;
+    padding: 30px 10px;
+    line-height: 1.8;
+}
+
+/* CHECKOUT FORM */
+
+.checkout-form {
+    margin-top: 20px;
+}
+
+.checkout-form label {
+    display: block;
+    font-size: 13px;
+    font-weight: bold;
+    margin: 14px 0 7px;
+}
+
+.checkout-form input,
+.checkout-form textarea,
+.checkout-form select {
+    width: 100%;
+    padding: 11px 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    outline: none;
+    background: white;
+}
+
+.checkout-form input:focus,
+.checkout-form textarea:focus,
+.checkout-form select:focus {
+    border-color: var(--orange);
+}
+
+.checkout-form textarea {
+    resize: vertical;
+    min-height: 75px;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.payment-note {
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.6;
+    margin-top: 10px;
+}
+
+.submit-order {
+    width: 100%;
+    margin-top: 20px;
+}
+
+.submit-order:disabled {
+    opacity: .5;
+    cursor: not-allowed;
+}
+
+/* ORDER SUCCESS */
+
+.success {
+    max-width: 620px;
+    margin: 55px auto;
+    text-align: center;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 35px 25px;
+}
+
+.success-icon {
+    font-size: 70px;
+    margin-bottom: 15px;
+}
+
+.success h2 {
+    font-size: 27px;
+    color: var(--green);
+    margin-bottom: 12px;
+}
+
+.success p {
+    color: var(--muted);
+    line-height: 1.7;
+}
+
+.receipt {
+    background: #f7faf8;
+    border-radius: 12px;
+    text-align: left;
+    padding: 17px;
+    margin: 22px 0;
+    font-size: 13px;
+    line-height: 2;
+    overflow-wrap: anywhere;
+}
+
+footer {
+    margin-top: 55px;
+    padding: 25px;
+    text-align: center;
+    background: #fff8f3;
+    color: #777;
+    font-size: 12px;
+}
+
+/* MOBILE */
+
+@media (max-width: 900px) {
+    .restaurant-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .cart-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .menu-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 560px) {
+    .nav-inner {
+        flex-wrap: wrap;
+        padding: 12px 15px;
+        gap: 12px;
+    }
+
+    .search {
+        order: 3;
+        flex-basis: 100%;
+        max-width: none;
+    }
+
+    .container {
+        padding: 0 15px;
+    }
+
+    .hero {
+        padding: 22px 18px;
+    }
+
+    .hero-photo {
+        width: 95px;
+        height: 100px;
+    }
+
+    .hero h1 {
+        font-size: 30px;
+    }
+
+    .restaurant-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .food-photo {
+        width: 82px;
+        height: 85px;
+    }
+
+    .food-card {
+        gap: 10px;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- NAVIGATION -->
+
+<nav class="navbar">
+    <div class="nav-inner">
+        <div class="logo">Foodie<span>.</span></div>
+
+        <label class="search">
+            🔍
+            <input id="searchInput" type="search"
+                   placeholder="Search restaurants or food...">
+        </label>
+
+        <button class="cart-btn" onclick="showCart()">
+            🛒 Cart <span class="cart-count" id="cartCount">0</span>
+        </button>
+    </div>
+</nav>
+
+<main class="container">
+
+    <!-- HOME PAGE -->
+
+    <section id="homePage">
+
+        <div class="hero">
+            <div class="hero-copy">
+                <div class="eyebrow">Good food, good mood</div>
+
+                <h1>Your favourites,<br>
+                    <span>delivered fresh.</span>
+                </h1>
+
+                <p>
+                    Discover restaurants, explore delicious menus,
+                    and order your favourite meals in just a few clicks.
+                </p>
+
+                <button class="primary"
+                    onclick="document.getElementById('restaurantsSection').scrollIntoView({behavior:'smooth'})">
+                    Explore Restaurants →
+                </button>
+            </div>
+
+            <img class="hero-photo"
+                 src="https://images.unsplash.com/photo-1504754524776-8f4f37790ca0?auto=format&fit=crop&w=650&q=80"
+                 alt="Fresh food on a table">
+        </div>
+
+        <section class="section">
+            <div class="section-heading">
+                <h2>Choose by category</h2>
+                <p>What are you craving today?</p>
+            </div>
+
+            <div id="categories" class="categories">
+                <button class="category active" data-category="All">🍽️ All</button>
+                <button class="category" data-category="South Indian">🥞 South Indian</button>
+                <button class="category" data-category="Indian">🍛 Indian</button>
+                <button class="category" data-category="Pizza">🍕 Pizza</button>
+                <button class="category" data-category="Burgers">🍔 Burgers</button>
+                <button class="category" data-category="Desserts">🍰 Desserts</button>
+            </div>
+        </section>
+
+        <section id="restaurantsSection" class="section">
+            <div class="section-heading">
+                <h2>Popular Restaurants</h2>
+                <p>Select a restaurant to explore its menu.</p>
+            </div>
+
+            <div id="restaurantGrid" class="restaurant-grid"></div>
+
+            <p id="noRestaurants" class="empty hidden">
+                No restaurants found. Try a different search.
+            </p>
+        </section>
+
+        <section id="menuSection" class="hidden">
+            <div class="menu-head">
+                <div>
+                    <h2 id="menuRestaurantName">Restaurant Menu</h2>
+                    <p id="menuRestaurantDetails"></p>
+                </div>
+
+                <button class="secondary" onclick="backToRestaurants()">
+                    ← Restaurants
+                </button>
+            </div>
+
+            <div id="menuGrid" class="menu-grid"></div>
+
+            <p id="noFood" class="empty hidden">
+                No matching food items found.
+            </p>
+        </section>
+    </section>
+
+    <!-- CART AND CHECKOUT -->
+
+    <section id="cartSection" class="hidden">
+
+        <div class="menu-head">
+            <div>
+                <h2>Your Cart 🛒</h2>
+                <p>Review your items and delivery details.</p>
+            </div>
+
+            <button class="secondary" onclick="backFromCart()">
+                ← Back
+            </button>
+        </div>
+
+        <div class="cart-layout">
+
+            <section class="panel">
+                <h2>Items in your order</h2>
+                <div id="cartItems"></div>
+            </section>
+
+            <div>
+                <section class="panel">
+                    <h2>Bill Details</h2>
+
+                    <div class="bill-row">
+                        <span>Item total</span>
+                        <span id="itemTotal">₹0</span>
+                    </div>
+
+                    <div class="bill-row">
+                        <span>Delivery fee</span>
+                        <span id="deliveryFee">₹0</span>
+                    </div>
+
+                    <div class="bill-row">
+                        <span>Taxes (5%)</span>
+                        <span id="taxAmount">₹0</span>
+                    </div>
+
+                    <div class="bill-row bill-total">
+                        <span>Grand Total</span>
+                        <span id="grandTotal">₹0</span>
+                    </div>
+
+                    <p class="note">
+                        ✓ Delivery is free on orders of ₹499 or more.
+                    </p>
+                </section>
+
+                <section class="panel checkout-form">
+                    <h2>Delivery & Payment</h2>
+
+                    <form id="checkoutForm">
+
+                        <div class="form-row">
+                            <div>
+                                <label for="customerName">Full Name</label>
+                                <input id="customerName" required
+                                       maxlength="60"
+                                       autocomplete="name"
+                                       placeholder="Your name">
+                            </div>
+
+                            <div>
+                                <label for="customerPhone">Phone Number</label>
+                                <input id="customerPhone" type="tel"
+                                       required pattern="[0-9]{10}"
+                                       maxlength="10" inputmode="numeric"
+                                       placeholder="10-digit number">
+                            </div>
+                        </div>
+
+                        <label for="customerEmail">Email (optional)</label>
+                        <input id="customerEmail" type="email"
+                               autocomplete="email"
+                               placeholder="you@example.com">
+
+                        <label for="customerAddress">Delivery Address</label>
+                        <textarea id="customerAddress" required
+                                  maxlength="300"
+                                  autocomplete="street-address"
+                                  placeholder="House number, street, area and city"></textarea>
+
+                        <div class="form-row">
+                            <div>
+                                <label for="customerPincode">PIN Code</label>
+                                <input id="customerPincode" required
+                                       pattern="[0-9]{6}" maxlength="6"
+                                       inputmode="numeric"
+                                       placeholder="6-digit PIN">
+                            </div>
+
+                            <div>
+                                <label for="landmark">Landmark</label>
+                                <input id="landmark" maxlength="80"
+                                       placeholder="Optional">
+                            </div>
+                        </div>
+
+                        <label for="paymentMethod">Payment Method</label>
+                        <select id="paymentMethod" required>
+                            <option value="Cash on Delivery">Cash on Delivery</option>
+                            <option value="UPI (demo)">UPI (demo only)</option>
+                            <option value="Card (demo)">Card (demo only)</option>
+                        </select>
+
+                        <p class="payment-note">
+                            This is a demo checkout. No real payment is collected.
+                            Do not enter card details or banking passwords.
+                        </p>
+
+                        <button id="placeOrderButton"
+                                class="primary submit-order"
+                                type="submit" disabled>
+                            Place Order
+                        </button>
+                    </form>
+                </section>
+            </div>
+        </div>
+    </section>
+
+    <!-- ORDER SUCCESS PAGE -->
+
+    <section id="successSection" class="hidden">
+        <div class="success">
+            <div class="success-icon">✅</div>
+
+            <h2>Order Placed Successfully!</h2>
+
+            <p>
+                Thank you for ordering with Foodie.
+                Your demo order confirmation is below.
+            </p>
+
+            <div id="receipt" class="receipt"></div>
+
+            <button class="primary" onclick="continueShopping()">
+                Order More Food
+            </button>
+        </div>
+    </section>
+
+</main>
+
+<footer>
+    <strong>Foodie.</strong>
+    Made with ❤️ for food lovers.
+    <br><br>
+    Student project demo · Online payment is not enabled
+</footer>
+
+<script>
+
+// RESTAURANTS AND MENUS
+
+const restaurants = [
+    {
+        id: 1,
+        name: "Chennai Spice House",
+        category: "South Indian",
+        description: "Authentic South Indian favourites",
+        rating: 4.7,
+        time: "20–30 min",
+        image: "https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&w=700&q=80",
+        menu: [
+            {
+                id: 101,
+                name: "Masala Dosa",
+                description: "Crispy dosa with potato masala",
+                price: 90,
+                image: "https://images.unsplash.com/photo-1668236543090-82eba5ee5976?auto=format&fit=crop&w=500&q=80"
+            },
+            {
+                id: 102,
+                name: "Idli & Sambar",
+                description: "Soft idlis with warm sambar",
+                price: 60,
+                image: "https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&w=500&q=80"
+            },
+            {
+                id: 103,
+                name: "South Indian Meals",
+                description: "Rice, curry and traditional sides",
+                price: 150,
+                image: "https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=500&q=80"
+            },
+            {
+                id: 104,
+                name: "Pongal",
+                description: "Comforting ghee and pepper pongal",
+                price: 75,
+                image: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=500&q=80"
+            }
+        ]
+    },
+    {
+        id: 2,
+        name: "Royal Biryani",
+        category: "Indian",
+        description: "Aromatic biryani and classic curries",
+        rating: 4.5,
+        time: "25–35 min",
+        image: "https://images.unsplash.com/photo-1563379091339-03246963d96c?auto=format&fit=crop&w=700&q=80",
+        menu: [
+            {
+                id: 201,
+                name: "Chicken Biryani",
+                description: "Biryani served with raita",
+                price: 190,
+                image: "https://images.unsplash.com/photo-1563379091339-03246963d96c?auto=format&fit=crop&w=500&q=80"
+            },
+            {
+                id: 202,
+                name: "Veg Biryani",
+                description: "Spiced rice with fresh vegetables",
+                price: 140,
+                image: "https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&w=500&q=80"
+            },
+            {
+                id: 203,
+                name: "Paneer Curry",
+                description: "Paneer in a rich tomato curry",
+                price: 180,
+                image: "https://images.unsplash.com/photo-1631452180519-c014fe946bc7?auto=format&fit=crop&w=500&q=80"
+            },
+            {
+                id: 204,
+                name: "Butter Naan",
+                description: "Soft, freshly baked naan",
+                price: 45,
+                image: "https://images.unsplash.com/photo-1606491956689-2ea866880c84?auto=format&fit=crop&w=500&q=80"
+            }
+        ]
+    },
+    {
+        id: 3,
+        name: "Pizza Corner",
+        category: "Pizza",
+        description: "Freshly baked pizza and pasta",
+        rating: 4.6,
+        time: "20–25 min",
+        image: "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=700&q=80",
+        menu: [
+            {
+                id: 301,
+                name: "Margherita Pizza",
+                description: "Classic tomato and cheese pizza",
+                price: 199,
+                image: "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=500&q=80"
+            },
+            {
+                id: 302,
+                name: "Farmhouse Pizza",
+                description: "Peppers, onion and mushrooms",
+                price: 299,
+                image: "https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?auto=format&fit=crop&w=500&q=80"
+            },
+            {
+                id: 303,
+                name: "Garlic Bread",
+                description: "Bread toasted with garlic butter",
+                price: 99,
+                image: "https://images.unsplash.com/photo-1619531040576-f9416740661b?auto=format&fit=crop&w=500&q=80"
+            },
+            {
+                id: 304,
+                name: "Pasta",
+                description: "Pasta with herbs and creamy sauce",
+                price: 179,
+                image: "https://images.unsplash.com/photo-1473093295043-cdd812d0e601?auto=format&fit=crop&w=500&q=80"
+            }
+        ]
+    },
+    {
+        id: 4,
+        name: "Burger Station",
+        category: "Burgers",
+        description: "Burgers, fries and tasty sides",
+        rating: 4.3,
+        time: "15–25 min",
+        image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=700&q=80",
+        menu: [
+            {
+                id: 401,
+                name: "Classic Veg Burger",
+                description: "Veg patty, lettuce and sauce",
+                price: 99,
+                image: "https://images.unsplash.com/photo-1520072959219-c595dc870360?auto=format&fit=crop&w=500&q=80"
+            },
+            {
+                id: 402,
+                name: "Cheese Burger",
+                description: "Cheese, lettuce and a soft bun",
+                price: 149,
+                image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=500&q=80"
+            },
+            {
+                id: 403,
+                name: "French Fries",
+                description: "Golden crispy salted fries",
+                price: 89,
+                image: "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=500&q=80"
+            },
+            {
+                id: 404,
+                name: "Veg Sandwich",
+                description: "Fresh vegetables in toasted bread",
+                price: 119,
+                image: "https://images.unsplash.com/photo-1528735602780-2552fd46c7af?auto=format&fit=crop&w=500&q=80"
+            }
+        ]
+    },
+    {
+        id: 5,
+        name: "Sweet Treats",
+        category: "Desserts",
+        description: "Cakes, brownies and ice cream",
+        rating: 4.8,
+        time: "15–20 min",
+        image: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=700&q=80",
+        menu: [
+            {
+                id: 501,
+                name: "Chocolate Cake",
+                description: "Rich chocolate cake slice",
+                price: 120,
+                image: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=500&q=80"
+            },
+            {
+                id: 502,
+                name: "Ice Cream",
+                description: "Creamy vanilla ice cream",
+                price: 70,
+                image: "https://images.unsplash.com/photo-1501446529957-6226bd447c46?auto=format&fit=crop&w=500&q=80"
+            },
+            {
+                id: 503,
+                name: "Chocolate Brownie",
+                description: "Delicious chocolate brownie",
+                price: 100,
+                image: "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=500&q=80"
+            },
+            {
+                id: 504,
+                name: "Pancakes",
+                description: "Fluffy pancakes with sweet topping",
+                price: 135,
+                image: "https://images.unsplash.com/photo-1528207776546-365bb710ee93?auto=format&fit=crop&w=500&q=80"
+            }
+        ]
+    }
+];
+
+let selectedCategory = "All";
+let activeRestaurantId = null;
+let cart = {};
+let page = "home";
+let previousPage = "home";
+
+const money = value => "₹" + value.toFixed(2).replace(/\.00$/, "");
+
+function getRestaurant(id) {
+    return restaurants.find(r => r.id === id);
+}
+
+function getFood(id) {
+    for (const restaurant of restaurants) {
+        const food = restaurant.menu.find(f => f.id === Number(id));
+        if (food) return food;
+    }
+    return null;
+}
+
+/* RESTAURANT DISPLAY */
+
+function renderRestaurants() {
+    const query = document.getElementById("searchInput")
+        .value.trim().toLowerCase();
+
+    const filtered = restaurants.filter(restaurant => {
+        const categoryMatch =
+            selectedCategory === "All" ||
+            restaurant.category === selectedCategory;
+
+        const searchMatch =
+            !query ||
+            restaurant.name.toLowerCase().includes(query) ||
+            restaurant.description.toLowerCase().includes(query) ||
+            restaurant.menu.some(food =>
+                food.name.toLowerCase().includes(query)
+            );
+
+        return categoryMatch && searchMatch;
+    });
+
+    document.getElementById("restaurantGrid").innerHTML =
+        filtered.map(restaurant => `
+            <article class="restaurant-card">
+                <img
+                    class="restaurant-photo"
+                    src="${restaurant.image}"
+                    alt="${restaurant.name}"
+                    loading="lazy"
+                    onerror="this.style.visibility='hidden'"
+                >
+
+                <div class="restaurant-info">
+                    <h3>${restaurant.name}</h3>
+                    <p>${restaurant.description}</p>
+
+                    <div class="meta">
+                        <span class="rating">★ ${restaurant.rating}</span>
+                        <span>🕒 ${restaurant.time}</span>
+                        <span>${restaurant.category}</span>
+                    </div>
+
+                    <button class="open-menu"
+                        onclick="openRestaurant(${restaurant.id})">
+                        View Menu →
+                    </button>
+                </div>
+            </article>
+        `).join("");
+
+    document.getElementById("noRestaurants")
+        .classList.toggle("hidden", filtered.length > 0);
+}
+
+/* PAGE SWITCHING */
+
+function setSection(name) {
+    document.getElementById("homePage").classList.toggle(
+        "hidden", name !== "home" && name !== "menu"
+    );
+
+    document.getElementById("restaurantsSection").classList.toggle(
+        "hidden", name !== "home"
+    );
+
+    document.getElementById("categories").parentElement.classList.toggle(
+        "hidden", name !== "home"
+    );
+
+    document.getElementById("menuSection").classList.toggle(
+        "hidden", name !== "menu"
+    );
+
+    document.getElementById("cartSection").classList.toggle(
+        "hidden", name !== "cart"
+    );
+
+    document.getElementById("successSection").classList.toggle(
+        "hidden", name !== "success"
+    );
+}
+
+function openRestaurant(id) {
+    activeRestaurantId = id;
+    page = "menu";
+
+    const restaurant = getRestaurant(id);
+
+    document.getElementById("menuRestaurantName").textContent =
+        restaurant.name;
+
+    document.getElementById("menuRestaurantDetails").textContent =
+        `★ ${restaurant.rating} · ${restaurant.time} · ${restaurant.category}`;
+
+    setSection("menu");
+    renderMenu();
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function renderMenu() {
+    const restaurant = getRestaurant(activeRestaurantId);
+    if (!restaurant) return;
+
+    const query = document.getElementById("searchInput")
+        .value.trim().toLowerCase();
+
+    const foods = restaurant.menu.filter(food =>
+        !query ||
+        food.name.toLowerCase().includes(query) ||
+        food.description.toLowerCase().includes(query)
+    );
+
+    document.getElementById("menuGrid").innerHTML =
+        foods.map(food => `
+            <article class="food-card">
+                <img class="food-photo"
+                    src="${food.image}"
+                    alt="${food.name}"
+                    loading="lazy"
+                    onerror="this.style.visibility='hidden'"
+                >
+
+                <div class="food-info">
+                    <h3>${food.name}</h3>
+                    <p>${food.description}</p>
+
+                    <div class="food-bottom">
+                        <span class="price">${money(food.price)}</span>
+
+                        <button class="add"
+                            onclick="addToCart(${restaurant.id}, ${food.id})">
+                            ${cart[food.id] ? "ADD MORE +" : "ADD +"}
+                        </button>
+                    </div>
+                </div>
+            </article>
+        `).join("");
+
+    document.getElementById("noFood")
+        .classList.toggle("hidden", foods.length > 0);
+}
+
+function backToRestaurants() {
+    activeRestaurantId = null;
+    page = "home";
+
+    setSection("home");
+    renderRestaurants();
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+/* SHOPPING CART */
+
+function addToCart(restaurantId, foodId) {
+    if (Object.keys(cart).length > 0) {
+        const firstFoodId = Number(Object.keys(cart)[0]);
+
+        const oldRestaurant = restaurants.find(r =>
+            r.menu.some(f => f.id === firstFoodId)
+        );
+
+        if (oldRestaurant && oldRestaurant.id !== restaurantId) {
+            const newRestaurant = getRestaurant(restaurantId);
+
+            const proceed = confirm(
+                "Your cart contains food from " + oldRestaurant.name +
+                ". Clear your cart and order from " +
+                newRestaurant.name + "?"
+            );
+
+            if (!proceed) return;
+
+            cart = {};
+        }
+    }
+
+    cart[foodId] = (cart[foodId] || 0) + 1;
+
+    renderCart();
+    renderMenu();
+    updateCartCount();
+}
+
+function cartQuantity() {
+    return Object.values(cart).reduce((sum, qty) => sum + qty, 0);
+}
+
+function subtotal() {
+    return Object.entries(cart).reduce((total, [id, qty]) => {
+        const food = getFood(id);
+        return total + (food ? food.price * qty : 0);
+    }, 0);
+}
+
+function deliveryFee() {
+    if (subtotal() === 0 || subtotal() >= 499) return 0;
+    return 30;
+}
+
+function taxes() {
+    return subtotal() * 0.05;
+}
+
+function grandTotal() {
+    return subtotal() + deliveryFee() + taxes();
+}
+
+function updateCartCount() {
+    document.getElementById("cartCount").textContent = cartQuantity();
+}
+
+function showCart() {
+    if (page !== "cart" && page !== "success") {
+        previousPage = page;
+    }
+
+    page = "cart";
+
+    setSection("cart");
+    renderCart();
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function backFromCart() {
+    if (previousPage === "menu" && activeRestaurantId) {
+        page = "menu";
+        setSection("menu");
+        renderMenu();
+    } else {
+        backToRestaurants();
+    }
+}
+
+function changeQuantity(foodId, difference) {
+    const quantity = (cart[foodId] || 0) + difference;
+
+    if (quantity <= 0) {
+        delete cart[foodId];
+    } else {
+        cart[foodId] = quantity;
+    }
+
+    renderCart();
+    renderMenu();
+    updateCartCount();
+}
+
+function renderCart() {
+    const entries = Object.entries(cart);
+    const cartItems = document.getElementById("cartItems");
+
+    if (entries.length === 0) {
+        cartItems.innerHTML = `
+            <div class="empty">
+                <strong>🛒 Your cart is empty.</strong><br>
+                Add delicious food from a restaurant.
+                <br><br>
+                <button class="primary"
+                    onclick="backToRestaurants()">
+                    Browse Restaurants
+                </button>
+            </div>
+        `;
+    } else {
+        cartItems.innerHTML = entries.map(([id, qty]) => {
+            const food = getFood(id);
+
+            return `
+                <div class="cart-item">
+                    <img class="cart-thumb"
+                        src="${food.image}"
+                        alt="${food.name}"
+                        onerror="this.style.visibility='hidden'"
+                    >
+
+                    <div class="cart-item-info">
+                        <h4>${food.name}</h4>
+                        <p>${money(food.price * qty)}</p>
+                    </div>
+
+                    <div class="quantity">
+                        <button onclick="changeQuantity(${id}, -1)">−</button>
+                        <strong>${qty}</strong>
+                        <button onclick="changeQuantity(${id}, 1)">+</button>
+                    </div>
+                </div>
+            `;
+        }).join("");
+    }
+
+    document.getElementById("itemTotal").textContent =
+        money(subtotal());
+
+    document.getElementById("deliveryFee").textContent =
+        deliveryFee() === 0 && subtotal() > 0
+            ? "FREE"
+            : money(deliveryFee());
+
+    document.getElementById("taxAmount").textContent =
+        money(taxes());
+
+    document.getElementById("grandTotal").textContent =
+        money(grandTotal());
+
+    document.getElementById("placeOrderButton").disabled =
+        subtotal() === 0;
+
+    updateCartCount();
+}
+
+/* CATEGORY FILTER */
+
+document.getElementById("categories").addEventListener("click", event => {
+    const button = event.target.closest("[data-category]");
+    if (!button) return;
+
+    selectedCategory = button.dataset.category;
+
+    document.querySelectorAll(".category").forEach(item => {
+        item.classList.toggle("active", item === button);
+    });
+
+    renderRestaurants();
+});
+
+/* SEARCH */
+
+document.getElementById("searchInput").addEventListener("input", () => {
+    if (page === "menu") {
+        renderMenu();
+    } else if (page === "home") {
+        renderRestaurants();
+    }
+});
+
+/* CHECKOUT AND ORDER CONFIRMATION */
+
+document.getElementById("checkoutForm").addEventListener("submit", event => {
+    event.preventDefault();
+
+    if (cartQuantity() === 0) {
+        alert("Your cart is empty!");
+        return;
+    }
+
+    const form = event.currentTarget;
+
+    if (!form.reportValidity()) return;
+
+    const name = document.getElementById("customerName").value.trim();
+    const phone = document.getElementById("customerPhone").value.trim();
+    const address = document.getElementById("customerAddress").value.trim();
+    const pin = document.getElementById("customerPincode").value.trim();
+    const landmark = document.getElementById("landmark").value.trim();
+    const payment = document.getElementById("paymentMethod").value;
+
+    const firstFoodId = Number(Object.keys(cart)[0]);
+
+    const restaurant = restaurants.find(r =>
+        r.menu.some(f => f.id === firstFoodId)
+    );
+
+    const orderId = "FD" + Date.now().toString().slice(-7);
+    const amount = money(grandTotal());
+
+    const receipt = document.getElementById("receipt");
+    receipt.replaceChildren();
+
+    const details = [
+        ["Order ID", orderId],
+        ["Restaurant", restaurant.name],
+        ["Customer", name],
+        ["Phone", phone],
+        ["Address", address + ", PIN " + pin +
+            (landmark ? ", Landmark: " + landmark : "")],
+        ["Payment", payment],
+        ["Order Total", amount]
+    ];
+
+    details.forEach(([label, value]) => {
+        const row = document.createElement("div");
+        const strong = document.createElement("strong");
+        strong.textContent = label + ": ";
+
+        row.appendChild(strong);
+        row.appendChild(document.createTextNode(value));
+        receipt.appendChild(row);
+    });
+
+    const disclaimer = document.createElement("p");
+    disclaimer.textContent =
+        "Demo confirmation only. No real payment or restaurant dispatch has occurred.";
+    disclaimer.style.marginTop = "12px";
+    receipt.appendChild(disclaimer);
+
+    cart = {};
+    form.reset();
+
+    page = "success";
+    setSection("success");
+    updateCartCount();
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
+});
+
+function continueShopping() {
+    selectedCategory = "All";
+
+    document.querySelectorAll(".category").forEach(button => {
+        button.classList.toggle(
+            "active",
+            button.dataset.category === "All"
+        );
+    });
+
+    document.getElementById("searchInput").value = "";
+
+    backToRestaurants();
+}
+
+/* INITIAL DISPLAY */
+
+renderRestaurants();
+renderCart();
+updateCartCount();
+
+</script>
+</body>
+</html>
